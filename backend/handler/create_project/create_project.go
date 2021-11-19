@@ -130,16 +130,16 @@ func callQoveryApi(name string, userId string) (graphql.Int, graphql.String, err
 	externalPort := int32(443)
 	ports := []qovery.ApplicationPortRequestPorts{
 		{
-			InternalPort:       80,
+			InternalPort:       1337,
 			ExternalPort:       &externalPort,
 			PubliclyAccessible: &accessible,
 			Protocol:           protocol,
 		},
 	}
 	qa, res, err := client.ApplicationsApi.CreateApplication(context.Background(), qe.Id).ApplicationRequest(qovery.ApplicationRequest{
-		Name: "appwrite",
+		Name: "strapi",
 		GitRepository: qovery.ApplicationGitRepositoryRequest{
-			Url:      "https://github.com/Qovery/appwrite.git",
+			Url:      "https://github.com/Qovery/strapi.git",
 			Branch:   &branch,
 			RootPath: "/",
 		},
