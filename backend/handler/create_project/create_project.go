@@ -163,8 +163,21 @@ func callQoveryApi(name string, userId string) (graphql.Int, graphql.String, err
 	if res.StatusCode >= 400 {
 		return 0, "", errors.New("received " + res.Status + " getting a new application link from Qovery API")
 	}
-	// TODO create Redis
-	// TODO create MariaDB
+
+	_, res, err = client.DatabasesApi.CreateDatabase(context.Background(), qe.Id).DatabaseRequest(qovery.DatabaseRequest{
+		Name:    "db",
+		Type:    "POSTGRESQL",
+		Version: "12",
+		Mode:    "CONTAINER",
+		Cpu:     &cpu,
+		Memory:  &memory,
+	}).Execute()
+	if err != nil {
+		return 0, "", err
+	}
+	if res.StatusCode >= 400 {
+		return 0, "", errors.New("received " + res.Status + " creating postgres database from Qovery API")
+	}
 
 	var mutation struct {
 		InsertProjectOne struct {
